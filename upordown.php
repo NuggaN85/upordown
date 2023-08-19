@@ -11,27 +11,36 @@ function checkWebsiteStatus($url) {
     return $statusCode;
 }
 
-if(isset($_POST['url']) && !empty($_POST['url'])) {
+$resultMessage = '';
+
+if (isset($_POST['url']) && !empty($_POST['url'])) {
     $url = trim($_POST['url']);
-    if(filter_var($url, FILTER_VALIDATE_URL)) {
+    if (filter_var($url, FILTER_VALIDATE_URL)) {
         $statusCode = checkWebsiteStatus($url);
-        if($statusCode == 200) {
-            echo 'Website URL is up';
+        if ($statusCode == 200) {
+            $resultMessage = 'Website URL is up';
         } else {
-            echo 'Sorry, Website URL is down'; 
+            $resultMessage = 'Sorry, Website URL is down';
         }
     } else {
-        echo 'Invalid URL'; 
-    }   
+        $resultMessage = 'Invalid URL';
+    }
 }
 ?>
 <!doctype html>
 <html>
-    <body>
-        <form action="" method="post">
-            <label for="url">Website URL:</label>
-            <input type="text" id="url" name="url" placeholder="Enter URL">
-            <input type="submit" value="Check">
-        </form>
-    </body>
+<head>
+    <title>Website Status Checker</title>
+</head>
+<body>
+    <h1>Website Status Checker</h1>
+    <form action="" method="post">
+        <label for="url">Website URL:</label>
+        <input type="text" id="url" name="url" placeholder="Enter URL" required>
+        <input type="submit" value="Check">
+    </form>
+    <?php if (!empty($resultMessage)): ?>
+    <p><?php echo $resultMessage; ?></p>
+    <?php endif; ?>
+</body>
 </html>
